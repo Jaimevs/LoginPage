@@ -2,7 +2,7 @@
   <div class="login-container">
     <div class="login-form">
       <h2>Iniciar Sesión</h2>
-      <form name="login-form">
+      <form name="login-form" @submit.prevent="login">
         <div class="mb-3">
           <label for="username">Usuario: </label>
           <input
@@ -25,8 +25,9 @@
           />
           <div v-if="errors.password" class="error-message">La contraseña no puede estar vacía.</div>
         </div>
-        <button class="btn-submit" type="submit" v-on:click.prevent="login()">Login</button>
+        <button class="btn-submit" type="submit">Login</button>
       </form>
+      <h3>Output: {{ output }}</h3>
       <p v-if="isAuthenticated" class="success-message">¡Autenticado correctamente!</p>
     </div>
   </div>
@@ -36,6 +37,8 @@
 </template>
 
 <script>
+import { SET_AUTHENTICATION, SET_USERNAME } from '@/store/storeconstants';
+
 export default {
   name: 'LoginView',
   data() {
@@ -48,16 +51,17 @@ export default {
         username: false,
         password: false
       },
-      isAuthenticated: false
-    }
+      isAuthenticated: false,
+      output: '' // Definir la variable output para mostrar los mensajes
+    };
   },
   methods: {
     login() {
-      // Resetear errores
+      // Reiniciar errores
       this.errors.username = false;
       this.errors.password = false;
-
-      // Validar campos
+      
+      // Validar si los campos están vacíos
       if (this.input.username === "") {
         this.errors.username = true;
       }
@@ -67,11 +71,16 @@ export default {
 
       // Si no hay errores, proceder con la autenticación
       if (!this.errors.username && !this.errors.password) {
+        this.output = "Autenticación completada";
+        this.$store.commit(`auth/${SET_AUTHENTICATION}`, true);
+        this.$store.commit(`auth/${SET_USERNAME}`, this.input.username);
         this.isAuthenticated = true;
-        console.log("Autenticado correctamente");
+        this.output = "Autenticación completa";
+        this.$router.push('/home');
       } else {
+        this.$store.commit(`auth/${SET_AUTHENTICATION}`, false);
+        this.output = "Nombre de usuario y contraseña no pueden estar vacíos";
         this.isAuthenticated = false;
-        console.log("usuario y password no pueden estar vacíos");
       }
     }
   }

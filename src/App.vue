@@ -1,16 +1,12 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-  <LoginView/>
+  <Router-view />
 </template>
 
 <script>
-import LoginView from './components/LoginView.vue'
-
 export default {
   name: 'App',
   components: {
-    LoginView
+    
   }
 }
 </script>
