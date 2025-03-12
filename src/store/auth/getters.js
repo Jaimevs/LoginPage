@@ -1,11 +1,10 @@
-import { IS_USER_AUTHENTICATED, GET_USERNAME } from "../storeconstants.js";
+import { GET_USERNAME, IS_USER_AUTHENTICATED } from '@/store/storeconstants'
 
 export default {
-    [IS_USER_AUTHENTICATED](state) {
-        return state.authenticated;
-    },
-    
-    [GET_USERNAME](state){
-        return state.username;
-    }
+  [GET_USERNAME]: (state) => {
+    return state.username
+  },
+  [IS_USER_AUTHENTICATED]: (state) => {
+    return state.authenticated
+  }
 }
